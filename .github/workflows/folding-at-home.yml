@@ -4,12 +4,12 @@ name: folding-at-home
 on:
   push:
     paths:
-      - '.github/workflows/folding-at-home.yml'
-      - 'build/**'
+      - ".github/workflows/folding-at-home.yml"
+      - "build/**"
   pull_request:
     paths:
-      - '.github/workflows/folding-at-home.yml'
-      - 'build/**'
+      - ".github/workflows/folding-at-home.yml"
+      - "build/**"
     branches:
       - master
 
