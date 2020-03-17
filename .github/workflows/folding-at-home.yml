@@ -1,0 +1,78 @@
+---
+name: folding-at-home
+
+on:
+  push:
+    paths:
+      - '.github/workflows/folding-at-home.yml'
+      - 'build/**'
+  pull_request:
+    paths:
+      - '.github/workflows/folding-at-home.yml'
+      - 'build/**'
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: $(cat build/.version)
+      VERSION_MAJOR: $(cat build/.version | sed -E 's/\.([^.]*)$//')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: Login to GitHub Docker Registry
+        run: echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Container Image
+        if: github.ref != 'refs/heads/master'
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg=VERSION=${{ env.VERSION }} \
+            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --tag stefancrain/folding-at-home:${{ github.sha }} \
+            -f ./build/Dockerfile \
+            ./build/ \
+            --push
+          docker buildx build \
+              --platform linux/amd64 \
+              --build-arg=VERSION=${{ env.VERSION }} \
+              --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+              --tag stefancrain/folding-at-home:${{ github.sha }}-cuda \
+              -f ./build/Dockerfile \
+              ./build/ \
+              --push
+
+      - name: Build Container Image
+        if: github.ref == 'refs/heads/master'
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg=VERSION=${{ env.VERSION }} \
+            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --tag stefancrain/folding-at-home:latest \
+            --tag stefancrain/folding-at-home:${{ env.VERSION }} \
+            -f ./build/Dockerfile \
+            ./build/ \
+            --push
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg=VERSION=${{ env.VERSION }} \
+            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --tag stefancrain/folding-at-home:latest-cuda \
+            --tag stefancrain/folding-at-home:${{ env.VERSION }}-cuda \
+            -f ./build/Dockerfile \
+            ./build/ \
+            --push

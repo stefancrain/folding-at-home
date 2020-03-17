@@ -1,0 +1,30 @@
+---
+name: Get latest release version
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch folding-at-home release version
+        run: |
+          curl https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.5/ | grep "fahclient_.*_amd64" | head -1 | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,3\}[0-9]\).*/\1/p' > build/.version && \
+          VERSION=$(cat build/.version | cut -c 11-) && \
+          echo $VERSION > build/.version
+
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+
+      - name: Commit latest release version
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config --global user.name 'Stefan Crain'
+          git config --global user.email 'stefancrain@users.noreply.github.com'
+          git commit -am "Adding new release version" || exit 0
+          git push
