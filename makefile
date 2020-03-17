@@ -30,11 +30,9 @@ buildx: ## build locally
 	docker buildx build --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local-cuda" -f ./build/Dockerfile-cuda ./build/ 
 	docker buildx build --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/ 
 
-
-run: ## test locally
+run-local: ## test locally
 	docker run "stefancrain/folding-at-home:local"
 
-
-run: ## test locally
-	docker run "stefancrain/folding-at-home:local"
+run-cuda: ## test locally
+	docker run "stefancrain/folding-at-home:local-cuda"
 

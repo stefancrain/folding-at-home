@@ -23,7 +23,7 @@ RUN apt-get update \
       gpg --batch --verify /tini.asc /tini \
     && chmod +x /tini  
 
-FROM nvidia/cuda:10.1-devel-ubuntu18.04
+FROM nvidia/cuda:10.1-runtime-ubuntu18.04
 LABEL maintainer="stefan.crain@gmail.com"
 
 #Add needed nvidia environment variables for https://github.com/NVIDIA/nvidia-docker

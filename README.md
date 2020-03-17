@@ -4,7 +4,6 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)](https://hub.docker.com/r/raspbernetes/gatekeeper)
 
-
 ```bash
 docker run -d -p 7396:7396 --rm stefancrain/folding-at-home:7.5.1
 ```
