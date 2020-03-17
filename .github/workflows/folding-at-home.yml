@@ -39,7 +39,7 @@ jobs:
         if: github.ref != 'refs/heads/master'
         run: |
           docker buildx build \
-            --platform linux/amd64 \
+            --platform linux/amd64,linux/arm64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
             --tag stefancrain/folding-at-home:${{ github.sha }} \
@@ -59,7 +59,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           docker buildx build \
-            --platform linux/amd64 \
+            --platform linux/amd64,linux/arm64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
             --tag stefancrain/folding-at-home:latest \

@@ -27,8 +27,8 @@ pretty: ##correct formatting errors
 	prettier --parser=yaml --write '*.y*ml' '**/*.y*ml' || true
 
 buildx: ## build locally
-	docker buildx build --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local-cuda" -f ./build/Dockerfile-cuda ./build/ 
-	docker buildx build --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/ 
+	docker buildx build --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local-cuda" -f ./build/Dockerfile-cuda ./build/
+	docker buildx build --platform linux/amd64,linux/arm64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
 
 run-local: ## test locally
 	docker run "stefancrain/folding-at-home:local"
