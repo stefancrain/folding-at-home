@@ -51,7 +51,7 @@ jobs:
               --build-arg=VERSION=${{ env.VERSION }} \
               --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
               --tag stefancrain/folding-at-home:${{ github.sha }}-cuda \
-              -f ./build/Dockerfile \
+              -f ./build/Dockerfile-cuda \
               ./build/ \
               --push
 
@@ -73,6 +73,6 @@ jobs:
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
             --tag stefancrain/folding-at-home:latest-cuda \
             --tag stefancrain/folding-at-home:${{ env.VERSION }}-cuda \
-            -f ./build/Dockerfile \
+            -f ./build/Dockerfile-cuda \
             ./build/ \
             --push
