@@ -28,7 +28,7 @@ LABEL maintainer="stefan.crain@gmail.com"
 
 COPY sample-config.xml /usr/share/doc/fahclient/sample-config.xml
 COPY --from=base /tini /bin/tini
-COPY --from=base /usr/bin/ /usr/bin/FA*
+COPY --from=base /usr/bin/FAH* /usr/bin/
 
 WORKDIR /app
 RUN groupadd -r fah \
