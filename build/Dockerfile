@@ -26,6 +26,19 @@ RUN apt-get update \
 FROM ubuntu:18.04
 LABEL maintainer="stefan.crain@gmail.com"
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="docker cpu folding-at-home" \
+      org.label-schema.description="Unofficial Image: Folding@home is a project focused on disease research." \
+      org.label-schema.url="https://foldingathome.org/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/stefancrain/folding-at-home/" \
+      org.label-schema.vendor="stefancrain.foldingathome.cpu" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
+
 COPY --from=base /tini /bin/tini
 COPY --from=base /usr/bin/FAH* /usr/bin/
 

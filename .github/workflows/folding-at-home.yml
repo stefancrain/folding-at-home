@@ -19,6 +19,7 @@ jobs:
     env:
       VERSION: $(cat build/.version)
       VERSION_MAJOR: $(cat build/.version | sed -E 's/\.([^.]*)$//')
+      BUILD_DATE: $(date -u +'%Y-%m-%dT%H:%M:%SZ')
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -42,18 +43,22 @@ jobs:
             --platform linux/amd64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
+            --build-arg=VCS_REF=${{ github.sha }} \
             --tag stefancrain/folding-at-home:${{ github.sha }} \
             -f ./build/Dockerfile \
             ./build/ \
             --push && \
           docker buildx build \
-              --platform linux/amd64 \
-              --build-arg=VERSION=${{ env.VERSION }} \
-              --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-              --tag stefancrain/folding-at-home:${{ github.sha }}-gpu \
-              -f ./build/Dockerfile-gpu \
-              ./build/ \
-              --push
+            --platform linux/amd64 \
+            --build-arg=VERSION=${{ env.VERSION }} \
+            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
+            --build-arg=VCS_REF=${{ github.sha }} \
+            --tag stefancrain/folding-at-home:${{ github.sha }}-gpu \
+            -f ./build/Dockerfile-gpu \
+            ./build/ \
+            --push
 
       - name: Build Container Image
         if: github.ref == 'refs/heads/master'
@@ -62,6 +67,8 @@ jobs:
             --platform linux/amd64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
+            --build-arg=VCS_REF=${{ github.sha }} \
             --tag stefancrain/folding-at-home:latest \
             --tag stefancrain/folding-at-home:${{ env.VERSION }} \
             -f ./build/Dockerfile \
@@ -71,6 +78,8 @@ jobs:
             --platform linux/amd64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
+            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
+            --build-arg=VCS_REF=${{ github.sha }} \
             --tag stefancrain/folding-at-home:latest-gpu \
             --tag stefancrain/folding-at-home:${{ env.VERSION }}-gpu \
             -f ./build/Dockerfile-gpu \
