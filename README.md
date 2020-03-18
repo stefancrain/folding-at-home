@@ -2,20 +2,22 @@
 
 ![build](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg) ![auto-update](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg?event=schedule)
 
-![GitHub Tag](https://img.shields.io/github/tag/stefancrain/folding-at-home)
-![GitHub commit activity](https://img.shields.io/github/last-commit/stefancrain/folding-at-home)
-![GitHub license](https://img.shields.io/github/license/stefancrain/folding-at-home)
+![GitHub Tag](https://badgen.net/github/tag/stefancrain/folding-at-home)
+![GitHub commit activity](https://badgen.net/github/last-commit/stefancrain/folding-at-home)
+![GitHub license](https://badgen.net/github/license/stefancrain/folding-at-home)
 
-![MicroBadger Layers](https://img.shields.io/microbadger/layers/stefancrain/folding-at-home)
-![MicroBadger Size](https://img.shields.io/microbadger/image-size/stefancrain/folding-at-home)
-![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)
-![Docker Stars](https://img.shields.io/docker/stars/stefancrain/folding-at-home)
+![Docker Layers](https://badgen.net/docker/pulls/stefancrain/folding-at-home)
+![Docker Size](https://badgen.net/docker/size/stefancrain/folding-at-home/latest/amd64?icon=docker&label=latest )
+![Docker Size](https://badgen.net/docker/size/stefancrain/folding-at-home/latest-gpu/amd64?icon=docker&label=latest-gpu)
+![Docker Stars](https://badgen.net/docker/stars/stefancrain/folding-at-home?icon=docker&label=stars )
 
 ## Unofficial, Unsupported
 
-This image is published to Docker Hub as [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home).
+This image is published to Docker Hub [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home) and automatically updated as folding-at-home releases changes.
 
-## CPU only
+## Deployment
+
+### CPU only
 
 ```bash
 docker run \
@@ -26,9 +28,9 @@ docker run \
  --power=full
 ```
 
-## CPU + GPU
+### CPU + GPU
 
-### Requirements
+#### Requirements
 
 - [A supported GPU](https://apps.foldingathome.org/GPUs.txt)
 - [NVIDIA/nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
@@ -44,6 +46,7 @@ docker run \
   --gpu-usage=100
 ```
 
-The web console is available on port 7396.
+### Defaults
 
-By default this container will contribute to 241985, team name: SaveTheBoomers
+- The web console is available on port 7396.
+- By default this container will contribute to team 241985, team name: SaveTheBoomers
