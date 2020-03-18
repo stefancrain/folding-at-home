@@ -1,6 +1,12 @@
 # Running Folding@Home in docker with GPU support
 
-![build](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg) ![auto-update](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg?event=schedule)[![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)](https://hub.docker.com/r/raspbernetes/gatekeeper)
+![build](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg) ![auto-update](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg?event=schedule)
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)](https://hub.docker.com/r/stefancrain/folding-at-home)
+
+[![](https://images.microbadger.com/badges/image/stefancrain/folding-at-home.svg)](https://microbadger.com/images/stefancrain/folding-at-home "Get your own image badge on microbadger.com")
+
+[![](https://images.microbadger.com/badges/version/stefancrain/folding-at-home.svg)](https://microbadger.com/images/stefancrain/folding-at-home "Get your own version badge on microbadger.com")
 
 This image is published to Docker Hub as [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home).
 

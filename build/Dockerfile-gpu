@@ -24,17 +24,16 @@ RUN apt-get update \
     && chmod +x /tini  
 
 FROM nvidia/opencl:runtime-ubuntu18.04
-LABEL maintainer="stefan.crain@gmail.com"
-
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL maintainer="stefan.crain@gmail.com" \
+      org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="docker gpu folding-at-home" \
       org.label-schema.description="Unofficial Image: Folding@home is a project focused on disease research." \
       org.label-schema.url="https://foldingathome.org/" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/stefancrain/folding-at-home/" \
+      org.label-schema.vcs-url="https://github.com/stefancrain/folding-at-home" \
       org.label-schema.vendor="stefancrain.foldingathome.gpu" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
