@@ -6,7 +6,6 @@
 ![GitHub commit activity](https://img.shields.io/github/last-commit/stefancrain/folding-at-home)
 ![GitHub license](https://img.shields.io/github/license/stefancrain/folding-at-home)
 
-
 ![MicroBadger Layers](https://img.shields.io/microbadger/layers/stefancrain/folding-at-home)
 ![MicroBadger Size](https://img.shields.io/microbadger/image-size/stefancrain/folding-at-home)
 ![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)
@@ -15,7 +14,6 @@
 ## Unofficial, Unsupported
 
 This image is published to Docker Hub as [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home).
-
 
 ## CPU only
 
