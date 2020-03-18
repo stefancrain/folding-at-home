@@ -34,6 +34,9 @@ COPY --from=base /tini /bin/tini
 COPY --from=base /usr/bin/FAH* /usr/bin/
 
 WORKDIR /app
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+       ocl-icd-opencl-dev
 RUN groupadd -r fah \
     && useradd -r -g fah fah \
     && chown -R fah /app
