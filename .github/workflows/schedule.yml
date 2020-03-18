@@ -3,7 +3,7 @@ name: Get latest release version
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 * * * *"
 
 jobs:
   get-version:
@@ -13,7 +13,7 @@ jobs:
 
       - name: Fetch folding-at-home release version
         run: |
-          curl https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.5/ | grep "fahclient_.*_amd64" | head -1 | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,3\}[0-9]\).*/\1/p' > build/.version && \
+          curl -L -k --silent https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.5/ | grep "fahclient_.*_amd64" | head -1 | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,3\}[0-9]\).*/\1/p' > build/.version && \
           VERSION=$(cat build/.version | cut -c 11-) && \
           echo $VERSION > build/.version
 
