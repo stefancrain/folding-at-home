@@ -23,26 +23,33 @@ RUN apt-get update \
       gpg --batch --verify /tini.asc /tini \
     && chmod +x /tini  
 
-FROM nvidia/cuda:10.1-runtime-ubuntu18.04
+FROM nvidia/opencl:runtime-ubuntu18.04
 LABEL maintainer="stefan.crain@gmail.com"
 
 #Add needed nvidia environment variables for https://github.com/NVIDIA/nvidia-docker
-ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility"
+ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,graphics,utility"
+ENV NVIDIA_VISIBLE_DEVICES="all"
 
-COPY sample-config.xml /usr/share/doc/fahclient/sample-config.xml
 COPY --from=base /tini /bin/tini
 COPY --from=base /usr/bin/FAH* /usr/bin/
 
 WORKDIR /app
-RUN apt-get update \
+
+# hadolint ignore=DL3008
+RUN mkdir -p /usr/share/doc/fahclient/ \
+    && touch /usr/share/doc/fahclient/sample-config.xml \
+    && apt-get update \
     && apt-get install --no-install-recommends -y \
-       ocl-icd-opencl-dev
-RUN groupadd -r fah \
+      ocl-icd-opencl-dev \
+    && apt-get clean autoclean \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && groupadd -r fah \
     && useradd -r -g fah fah \
     && chown -R fah /app
 
 EXPOSE 7396
 USER fah
 
-ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396"]
-CMD ["--user=Anonymous", "--team=241985", "--smp=true", "--power=full"]
+ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396", "--smp=true"]
+CMD ["--user=Anonymous", "--team=241985", "--power=full", "--gpu-usage=100"]

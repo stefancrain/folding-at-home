@@ -50,8 +50,8 @@ jobs:
               --platform linux/amd64 \
               --build-arg=VERSION=${{ env.VERSION }} \
               --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-              --tag stefancrain/folding-at-home:${{ github.sha }}-cuda \
-              -f ./build/Dockerfile-cuda \
+              --tag stefancrain/folding-at-home:${{ github.sha }}-gpu \
+              -f ./build/Dockerfile-gpu \
               ./build/ \
               --push
 
@@ -71,8 +71,8 @@ jobs:
             --platform linux/amd64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-            --tag stefancrain/folding-at-home:latest-cuda \
-            --tag stefancrain/folding-at-home:${{ env.VERSION }}-cuda \
-            -f ./build/Dockerfile-cuda \
+            --tag stefancrain/folding-at-home:latest-gpu \
+            --tag stefancrain/folding-at-home:${{ env.VERSION }}-gpu \
+            -f ./build/Dockerfile-gpu \
             ./build/ \
             --push

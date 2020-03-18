@@ -26,7 +26,7 @@ RUN apt-get update \
 FROM ubuntu:18.04
 LABEL maintainer="stefan.crain@gmail.com"
 
-COPY sample-config.xml /usr/share/doc/fahclient/sample-config.xml
+RUN touch /usr/share/doc/fahclient/sample-config.xml
 COPY --from=base /tini /bin/tini
 COPY --from=base /usr/bin/FAH* /usr/bin/
 
@@ -38,5 +38,5 @@ RUN groupadd -r fah \
 EXPOSE 7396
 USER fah
 
-ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396"]
-CMD ["--user=Anonymous", "--team=241985", "--smp=true", "--power=full"]
+ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396", "--smp=true"]
+CMD ["--user=Anonymous", "--team=241985", "--power=full"]
