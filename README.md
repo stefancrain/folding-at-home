@@ -2,15 +2,20 @@
 
 ![build](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg) ![auto-update](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg?event=schedule)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)](https://hub.docker.com/r/stefancrain/folding-at-home)
+![GitHub Tag](https://img.shields.io/github/tag/stefancrain/folding-at-home)
+![GitHub commit activity](https://img.shields.io/github/last-commit/stefancrain/folding-at-home)
+![GitHub license](https://img.shields.io/github/license/stefancrain/folding-at-home)
 
-[![](https://images.microbadger.com/badges/image/stefancrain/folding-at-home.svg)](https://microbadger.com/images/stefancrain/folding-at-home "Get your own image badge on microbadger.com")
 
-[![](https://images.microbadger.com/badges/version/stefancrain/folding-at-home.svg)](https://microbadger.com/images/stefancrain/folding-at-home "Get your own version badge on microbadger.com")
+![MicroBadger Layers](https://img.shields.io/microbadger/layers/stefancrain/folding-at-home)
+![MicroBadger Size](https://img.shields.io/microbadger/image-size/stefancrain/folding-at-home)
+![Docker Pulls](https://img.shields.io/docker/pulls/stefancrain/folding-at-home)
+![Docker Stars](https://img.shields.io/docker/stars/stefancrain/folding-at-home)
+
+## Unofficial, Unsupported
 
 This image is published to Docker Hub as [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home).
 
-Unofficial
 
 ## CPU only
 
@@ -27,6 +32,7 @@ docker run \
 
 ### Requirements
 
+- [A supported GPU](https://apps.foldingathome.org/GPUs.txt)
 - [NVIDIA/nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
 
 ```bash
