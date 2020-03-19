@@ -67,4 +67,4 @@ EXPOSE 7396
 USER fah
 
 ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396", "--smp=true"]
-CMD ["--user=Anonymous", "--team=241985", "--power=full", "--gpu-usage=100"]
+CMD ["--user=Anonymous", "--team=229500", "--power=full", "--gpu-usage=100"]

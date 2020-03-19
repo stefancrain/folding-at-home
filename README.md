@@ -30,7 +30,7 @@ docker run \
   -p 7396:7396 \
   stefancrain/folding-at-home:latest \
   --user=YOUR_NAME_HERE \
-  --team=241985 \
+  --team=229500 \
   --power=full \
   --gpu-usage=100
 ```
@@ -47,7 +47,7 @@ services:
     ports:
       - 7396:7396
     restart: unless-stopped
-    command: ["--user=YOUR_NAME_HERE","--team=241985","--power=full","--gpu-usage=100"]
+    command: ["--user=YOUR_NAME_HERE","--team=229500","--power=full","--gpu-usage=100"]
 ```
 
 ### K8s
@@ -63,7 +63,7 @@ TODO: create k8s cluster and test!
 
 - The web console is available on port 7396.
 - Full access to CPU and GPU
-- By default this container will contribute to [SaveTheBoomers - 241985](https://stats.foldingathome.org/team/241985) - Feel free to change.
+- By default this container will contribute to [Homelab - 229500](https://stats.foldingathome.org/team/229500) - Feel free to change.
 - To see additional config options run the help command:
 
 ```bin
