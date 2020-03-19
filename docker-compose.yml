@@ -1,0 +1,9 @@
+---
+version: "3"
+services:
+  folding-at-home:
+    image: stefancrain/folding-at-home:latest
+    container_name: folding-at-home
+    ports:
+      - 7396:7396
+    restart: unless-stopped

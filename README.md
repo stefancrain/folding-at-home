@@ -49,4 +49,4 @@ docker run \
 ### Defaults
 
 - The web console is available on port 7396.
-- By default this container will contribute to team 241985, team name: SaveTheBoomers
+- By default this container will contribute to team [241985](https://stats.foldingathome.org/team/241985), team name: SaveTheBoomers

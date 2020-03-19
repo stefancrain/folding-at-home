@@ -13,7 +13,7 @@ jobs:
 
       - name: Fetch folding-at-home release version
         run: |
-          curl https://formulae.brew.sh/api/cask/folding-at-home.json | \
+          curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
 
       - name: Check for modified files
