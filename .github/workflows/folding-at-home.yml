@@ -48,16 +48,6 @@ jobs:
             --tag stefancrain/folding-at-home:${{ github.sha }} \
             -f ./build/Dockerfile \
             ./build/ \
-            --push && \
-          docker buildx build \
-            --platform linux/amd64 \
-            --build-arg=VERSION=${{ env.VERSION }} \
-            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
-            --build-arg=VCS_REF=${{ github.sha }} \
-            --tag stefancrain/folding-at-home:${{ github.sha }}-gpu \
-            -f ./build/Dockerfile-gpu \
-            ./build/ \
             --push
 
       - name: Build Container Image
@@ -72,16 +62,5 @@ jobs:
             --tag stefancrain/folding-at-home:latest \
             --tag stefancrain/folding-at-home:${{ env.VERSION }} \
             -f ./build/Dockerfile \
-            ./build/ \
-            --push && \
-          docker buildx build \
-            --platform linux/amd64 \
-            --build-arg=VERSION=${{ env.VERSION }} \
-            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
-            --build-arg=VCS_REF=${{ github.sha }} \
-            --tag stefancrain/folding-at-home:latest-gpu \
-            --tag stefancrain/folding-at-home:${{ env.VERSION }}-gpu \
-            -f ./build/Dockerfile-gpu \
             ./build/ \
             --push

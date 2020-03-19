@@ -7,3 +7,10 @@ services:
     ports:
       - 7396:7396
     restart: unless-stopped
+    command:
+      [
+        "--user=YOUR_NAME_HERE",
+        "--team=241985",
+        "--power=full",
+        "--gpu-usage=100",
+      ]

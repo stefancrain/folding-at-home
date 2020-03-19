@@ -20,7 +20,6 @@ lint: ##test files for syntax errors
 	yamllint . || true
 	markdownlint . || true
 	hadolint build/Dockerfile || true
-	hadolint build/Dockerfile-gpu || true
 
 pretty: ##correct formatting errors
 	prettier --parser=markdown --write '*.md' '**/*.md' || true
@@ -29,12 +28,7 @@ pretty: ##correct formatting errors
 buildx: ## build locally
 	make pretty
 	make lint
-	docker buildx build --load --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --build-arg=VCS_REF=1 --build-arg=BUILD_DATE=1 --tag "stefancrain/folding-at-home:local-gpu" -f ./build/Dockerfile-gpu ./build/
 	docker buildx build --load --platform linux/amd64 --build-arg=VERSION=7.5.1 --build-arg=VERSION_MAJOR=7.5 --build-arg=VCS_REF=1 --build-arg=BUILD_DATE=1 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
 
 run-local: ## test locally
 	docker run "stefancrain/folding-at-home:local"
-
-run-local-gpu: ## test locally
-	docker run "stefancrain/folding-at-home:local-gpu"
-
