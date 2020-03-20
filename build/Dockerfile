@@ -63,8 +63,8 @@ RUN mkdir -p /usr/share/doc/fahclient/ \
     && useradd -r -g fah fah \
     && chown -R fah /app
 
-EXPOSE 7396
+EXPOSE 36330 7396
 USER fah
 
 ENTRYPOINT ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396", "--smp=true"]
-CMD ["--user=Anonymous", "--team=229500", "--power=full", "--gpu-usage=100"]
+CMD ["--user=Anonymous", "--team=229500", "--power=full", "--gpu-usage=100", "--cpu-usage=100"]

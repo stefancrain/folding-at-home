@@ -13,4 +13,5 @@ services:
         "--team=229500",
         "--power=full",
         "--gpu-usage=100",
+        "--cpu-usage=100",
       ]
