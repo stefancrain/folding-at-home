@@ -27,6 +27,7 @@ This image is published to Docker Hub at [stefancrain/folding-at-home](https://h
 
 ```bash
 docker run \
+  --gpus all \
   -p 7396:7396 \
   stefancrain/folding-at-home:latest \
   --user=YOUR_NAME_HERE \
