@@ -38,6 +38,8 @@ docker run \
 
 ### Docker-compose
 
+Docker-compose GPU access is currently blocked by upstream issue in compose [#6691](https://github.com/docker/compose/issues/6691), tracked in [#4](https://github.com/stefancrain/folding-at-home/issues/4). This will work for CPU folding only :
+
 ```bash
 ---
 version: "3"
