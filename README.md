@@ -37,6 +37,7 @@ I'm not a member of the F@H team. I actively work on issues here, and have set t
 
 ```bash
 docker run \
+  --name folding-at-home \
   --gpus all \
   -p 7396:7396 \
   stefancrain/folding-at-home:latest \
@@ -68,7 +69,7 @@ services:
 
 I don't currently have a K8s cluster at home, so I'm including examples of users running this image in their config.
 
-- [onedr0p/k3s-gitops](https://github.com/onedr0p/k3s-gitops/blob/master/deployments/default/folding-at-home/folding-at-home.yaml) works great but /u/onedrop has no approved GPUs to test
+- [onedr0p/k3s-gitops](https://github.com/onedr0p/k3s-gitops/blob/fdc4be556833d3fcc4849b54cc248eb1a9c89dcc/deployments/default/folding-at-home/folding-at-home.yaml) works great but /u/onedrop has no approved GPUs to test
 - [coreweave/fah-docker](https://github.com/coreweave/fah-docker/blob/master/kubernetes/folding-at-home-deployment.yaml) (a different container) but the config to support GPU enabled docker container, untested (by me)
 
 TODO: create k8s cluster and test!
@@ -92,7 +93,7 @@ docker run \
 > What are the FAHClient defaults set for this container?
 
 - **User** : Anonymous
-- **Team** : [Homelab - 229500](https://stats.foldingathome.org/team/229500)
+- **Team** : [Homelab - 229500](https://stats.foldingathome.org/team/229500) [_who?_](https://www.reddit.com/r/homelab/comments/fkyr1i/foldinghome_homelab_team_against_covid19/)
 - **Power** : full (use full CPU)
 - **gpu-usage** : 100%
 - **cpu-usage** : 100%
