@@ -23,7 +23,7 @@ TL;DR: **Folding at home** is simulating the dynamics of COVID-19 proteins to hu
 
 I'm not a member of the F@H team. I actively work on issues here, and have set this up to [automatically update](.github/workflows/schedule.yml) in my absence. This image is published to [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home) and automatically updated as the folding-at-home team releases changes.
 
-## Support
+## Prerequisites
 
 - CPU: amd64
 - GPU: Nvidia and AMD
@@ -75,6 +75,10 @@ I don't currently have a K8s cluster at home, so I'm including examples of users
 TODO: create k8s cluster and test!
 
 ## Troubleshooting and FAQ
+
+### nvidia-docker 
+
+Make sure you have `nvidia-docker` installed; if not, install by following the instructions (here)[https://github.com/NVIDIA/nvidia-docker], otherwise `docker run` will abort with the error `could not select device driver "" with capabilities: [[gpu]]`.
 
 ### Nvidia
 
