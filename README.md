@@ -78,7 +78,7 @@ TODO: create k8s cluster and test!
 
 ### nvidia-docker 
 
-Make sure you have `nvidia-docker` installed; if not, install by following the instructions (here)[https://github.com/NVIDIA/nvidia-docker], otherwise `docker run` will abort with the error `could not select device driver "" with capabilities: [[gpu]]`.
+Is your `docker run` aborting with error `could not select device driver "" with capabilities: [[gpu]]`? Please be sure you installed `nvidia-docker` as indicated in the 'Prerequisites' section above.  
 
 ### Nvidia
 
