@@ -1,9 +1,9 @@
 FROM ubuntu:18.04 as base
 ENV DEBIAN_FRONTEND=noninteractive \
-    TINI_VERSION=v0.18.0
+    TINI_VERSION=v0.19.0
 
-ARG VERSION=7.5.1
-ARG VERSION_MAJOR=7.5
+ARG VERSION=7.6.9
+ARG VERSION_MAJOR=7.6
 
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
