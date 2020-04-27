@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
 
       - name: Fetch folding-at-home release version
         run: |
@@ -34,10 +34,10 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
 
       - name: Push tags
         uses: ad-m/github-push-action@master
         with:
           tags: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
