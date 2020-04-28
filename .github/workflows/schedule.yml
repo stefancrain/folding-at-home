@@ -28,7 +28,7 @@ jobs:
         run: |
           git config --global user.name 'Stefan Crain'
           git config --global user.email 'stefancrain@users.noreply.github.com'
-          git commit -am "Adding new release version $(cat build/.version)" || exit 0
+          git commit -sam "Adding new release version $(cat build/.version)" || exit 0
           git tag -a $(cat build/.version) -m "Automatic bump to $(cat build/.version)"
 
       - name: Push changes
