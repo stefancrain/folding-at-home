@@ -3,7 +3,7 @@ name: Get latest release version
 
 on:
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "*/15 * * * *"
 
 jobs:
   get-version:
