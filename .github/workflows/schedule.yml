@@ -3,13 +3,14 @@ name: Get latest release version
 
 on:
   schedule:
-    - cron: "* */6 * * *"
+    - cron: "* */12 * * *"
 
 jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout code
+        uses: actions/checkout@master
         with:
           token: ${{ secrets.PAT }}
 
@@ -28,15 +29,10 @@ jobs:
         run: |
           git config --global user.name 'Stefan Crain'
           git config --global user.email 'stefancrain@users.noreply.github.com'
-          git commit -sam "Adding new release version $(cat build/.version)" || exit 0
-          git tag -a $(cat build/.version) -m "Automatic bump to $(cat build/.version)"
+          git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
+          git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PAT }}
-
-      - name: Push tags
+      - name: Push changes + tags
         uses: ad-m/github-push-action@master
         with:
           tags: true

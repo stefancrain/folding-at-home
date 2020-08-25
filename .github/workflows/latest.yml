@@ -4,11 +4,17 @@ name: folding-at-home
 on:
   push:
     paths:
-      - ".github/workflows/folding-at-home.yml"
+      - ".github/workflows/latest.yml"
+      - ".github/workflows/tags.yml"
+      - ".github/workflows/lint.yml"
+      - ".github/workflows/schedule.yml"
       - "build/**"
   pull_request:
     paths:
-      - ".github/workflows/folding-at-home.yml"
+      - ".github/workflows/latest.yml"
+      - ".github/workflows/tags.yml"
+      - ".github/workflows/lint.yml"
+      - ".github/workflows/schedule.yml"
       - "build/**"
     branches:
       - master
@@ -37,20 +43,6 @@ jobs:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build Container Image
-        if: github.ref != 'refs/heads/master'
-        run: |
-          docker buildx build \
-            --platform linux/amd64 \
-            --build-arg=VERSION=${{ env.VERSION }} \
-            --build-arg=VERSION_MAJOR=${{ env.VERSION_MAJOR }} \
-            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
-            --build-arg=VCS_REF=${{ github.sha }} \
-            --tag stefancrain/folding-at-home:${{ github.sha }} \
-            -f ./build/Dockerfile \
-            ./build/ \
-            --push
-
-      - name: Build Container Image
         if: github.ref == 'refs/heads/master'
         run: |
           docker buildx build \
@@ -60,7 +52,6 @@ jobs:
             --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
             --build-arg=VCS_REF=${{ github.sha }} \
             --tag stefancrain/folding-at-home:latest \
-            --tag stefancrain/folding-at-home:${{ env.VERSION }} \
             -f ./build/Dockerfile \
             ./build/ \
             --push

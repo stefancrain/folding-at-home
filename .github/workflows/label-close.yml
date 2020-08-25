@@ -1,0 +1,16 @@
+---
+name: Close as a upstream issue
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close Issue
+        uses: peter-evans/close-issue@v1
+        if: contains(github.event.issue.labels.*.name, 'upstream')
+        with:
+          comment: |
+            Sorry, but we'd like to keep issues related to code in this repository. Thank you 🙇
