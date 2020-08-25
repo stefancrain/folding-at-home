@@ -35,7 +35,18 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           docker buildx build \
-            --platform linux/amd64 \
+            --platform linux/amd64,linux/arm64 \
+            --build-arg=VERSION=${{ env.VERSION }} \
+            --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
+            --build-arg=VCS_REF=${{ github.sha }} \
+            --target mini \
+            --tag stefancrain/folding-at-home-mini:latest \
+            --tag stefancrain/folding-at-home-mini:${{ env.VERSION }} \
+            -f ./build/Dockerfile \
+            ./build/ \
+            --push
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
             --build-arg=VERSION=${{ env.VERSION }} \
             --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
             --build-arg=VCS_REF=${{ github.sha }} \

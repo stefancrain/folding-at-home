@@ -2,6 +2,7 @@
 
 ![build](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg)
 ![auto-update](https://github.com/stefancrain/folding-at-home/workflows/folding-at-home/badge.svg?event=schedule)
+![CI](https://github.com/stefancrain/folding-at-home/workflows/CI/badge.svg?branch=master)
 
 ![GitHub Tag](https://badgen.net/github/tag/stefancrain/folding-at-home?icon=github&label=version)
 ![GitHub commit activity](https://badgen.net/github/last-commit/stefancrain/folding-at-home?icon=github&label=updated)
