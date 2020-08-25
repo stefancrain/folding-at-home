@@ -1,5 +1,5 @@
 ---
-name: folding-at-home
+name: latest
 
 on:
   push:
@@ -12,6 +12,7 @@ on:
       - "build/**"
     branches:
       - master
+      - beta
 
 jobs:
   build:

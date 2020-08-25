@@ -16,14 +16,15 @@ jobs:
           token: ${{ secrets.PAT }}
 
       - name: Fetch stable release version
+        if: github.ref == 'refs/heads/master'
         run: |
           curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
           VERSION=$(cat build/.version)
-          VERSION_MAJOR=$(cat build/.version | sed -E 's/\.([^.]*)$//')
           sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Fetch beta release version
+        if: github.ref == 'refs/heads/beta'
         run: |
           MAJOR_VER=$( \
             curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
@@ -39,10 +40,9 @@ jobs:
           grep -o "^fah.*\.deb$" | \
           sort --version-sort | \
           tail -n1 | \
-          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.versions/beta
-          VERSION=$(cat build/.versions/beta)
-          VERSION_MAJOR=$(cat build/.versions/beta | sed -E 's/\.([^.]*)$//')
-          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile.beta
+          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
+          VERSION=$(cat build/.version)
+          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Check for modified files
         id: git-check

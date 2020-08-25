@@ -2,10 +2,13 @@
 name: CI
 on:
   push:
-    branches: [$default-branch]
+    branches:
+      - master
+      - beta
   pull_request:
-    branches: [$default-branch]
-
+    branches:
+      - master
+      - beta
 jobs:
   yamllint:
     name: "Yamllint"
