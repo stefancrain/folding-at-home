@@ -45,8 +45,8 @@ jobs:
             --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
             --build-arg=VCS_REF=${{ github.sha }} \
             --target mini \
-            --tag stefancrain/folding-at-home-micro:latest-beta \
-            --tag stefancrain/folding-at-home-micro:${{ env.VERSION }}-beta \
+            --tag stefancrain/folding-at-home-mini:latest-beta \
+            --tag stefancrain/folding-at-home-mini:${{ env.VERSION }}-beta \
             -f ./build/Dockerfile \
             ./build/ \
             --push
@@ -70,8 +70,8 @@ jobs:
             --build-arg=BUILD_DATE=${{ env.VERSION_MAJOR }} \
             --build-arg=VCS_REF=${{ github.sha }} \
             --target mini \
-            --tag stefancrain/folding-at-home-micro:stable \
-            --tag stefancrain/folding-at-home-micro:${{ env.VERSION }} \
+            --tag stefancrain/folding-at-home-mini:stable \
+            --tag stefancrain/folding-at-home-mini:${{ env.VERSION }} \
             -f ./build/Dockerfile \
             ./build/ \
             --push
