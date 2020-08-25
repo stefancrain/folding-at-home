@@ -10,7 +10,7 @@ assignees: ""
 
 New issue for Reproducible Bug
 
-- [ ] Ran `docker run --rm --gpus all --entrypoint="/usr/bin/FAHClient" stefancrain/folding-at-home:latest --info` and included this output with your issue?
+- [ ] Ran `docker run --rm --gpus all --entrypoint="FAHClient" stefancrain/folding-at-home:latest --info` and included this output with your issue?
 - [ ] Ran `docker run --rm --gpus all --entrypoint="nvidia-smi" stefancrain/folding-at-home:latest` and included this output with your issue?
 
 <!-- To help us debug your issue, please complete these sections: -->

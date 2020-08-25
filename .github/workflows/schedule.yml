@@ -1,12 +1,13 @@
 ---
-name: Get latest release version
+name: Daily schedule
 
 on:
   schedule:
-    - cron: "* */12 * * *"
+    - cron: "* */6 * * *"
 
 jobs:
-  get-version:
+  fetch-versions:
+    name: "Fetch Beta and Stable releases"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -14,17 +15,40 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
 
-      - name: Fetch folding-at-home release version
+      - name: Fetch stable release version
         run: |
           curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
-          cat build/.version
+          VERSION=$(cat build/.version)
+          VERSION_MAJOR=$(cat build/.version | sed -E 's/\.([^.]*)$//')
+          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
+
+      - name: Fetch beta release version
+        run: |
+          MAJOR_VER=$( \
+            curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
+            grep "href" | \
+            sed -e "s#/<.*##g" -e "s#.*/\">##g" | \
+            grep -o "^v.*" | \
+            sort --version-sort | \
+            tail -n1 \
+          )
+          curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/${MAJOR_VER}/ | \
+          grep deb | \
+          sed  -e "s#deb.*#deb#g" -e "s#.*fah#fah#g" -e "s#.*latest.*##g" | \
+          grep -o "^fah.*\.deb$" | \
+          sort --version-sort | \
+          tail -n1 | \
+          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.versions/beta
+          VERSION=$(cat build/.versions/beta)
+          VERSION_MAJOR=$(cat build/.versions/beta | sed -E 's/\.([^.]*)$//')
+          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile.beta
 
       - name: Check for modified files
         id: git-check
         run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
 
-      - name: Commit latest release version
+      - name: Commit release version update
         if: steps.git-check.outputs.modified == 'true'
         run: |
           git config --global user.name 'Stefan Crain'

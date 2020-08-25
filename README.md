@@ -21,7 +21,10 @@ TL;DR: **Folding at home** is simulating the dynamics of COVID-19 proteins to hu
 
 ## Unofficial, Unsupported
 
-I'm not a member of the F@H team. I actively work on issues here, and have set this up to [automatically update](.github/workflows/schedule.yml) in my absence. This image is published to [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home) and automatically updated as the folding-at-home team releases changes.
+I'm not a member of the F@H team. I actively work on issues here, and have set
+this up to [automatically update](.github/workflows/schedule.yml) in my absence.
+This image is published to [stefancrain/folding-at-home](https://hub.docker.com/repository/docker/stefancrain/folding-at-home)
+and automatically updated as the folding-at-home team releases changes.
 
 ## Prerequisites
 
@@ -50,7 +53,10 @@ docker run \
 
 ### Docker-compose
 
-Docker-compose GPU access is currently blocked by upstream issue in compose [#6691](https://github.com/docker/compose/issues/6691), tracked in [#4](https://github.com/stefancrain/folding-at-home/issues/4). **This will work for CPU folding only** :
+Docker-compose GPU access is currently blocked by upstream issue in compose
+[#6691](https://github.com/docker/compose/issues/6691),
+tracked in [#4](https://github.com/stefancrain/folding-at-home/issues/4).
+**This will work for CPU folding only** :
 
 ```bash
 ---
@@ -69,8 +75,10 @@ services:
 
 I don't currently have a K8s cluster at home, so I'm including examples of users running this image in their config.
 
-- [onedr0p/k3s-gitops](https://github.com/onedr0p/k3s-gitops/blob/fdc4be556833d3fcc4849b54cc248eb1a9c89dcc/deployments/default/folding-at-home/folding-at-home.yaml) works great but /u/onedrop has no approved GPUs to test
-- [coreweave/fah-docker](https://github.com/coreweave/fah-docker/blob/master/kubernetes/folding-at-home-deployment.yaml) (a different container) but the config to support GPU enabled docker container, untested (by me)
+- [onedr0p/k3s-gitops](https://github.com/onedr0p/k3s-gitops/blob/fdc4be556833d3fcc4849b54cc248eb1a9c89dcc/deployments/default/folding-at-home/folding-at-home.yaml)
+  works great but /u/onedrop has no approved GPUs to test
+- [coreweave/fah-docker](https://github.com/coreweave/fah-docker/blob/master/kubernetes/folding-at-home-deployment.yaml)
+  (a different container) but the config to support GPU enabled docker container, untested (by me)
 
 TODO: create k8s cluster and test!
 
