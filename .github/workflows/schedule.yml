@@ -20,52 +20,52 @@ jobs:
           ref: "${{ matrix.branch }}"
           token: "${{ secrets.PAT }}"
 
-      - run: echo I've checked out the `${{ matrix.branch }}` branch
+      - run: echo I've checked out the ${{ matrix.branch }} branch
 
-      # - name: Fetch stable release version
-      #   if: ${{ matrix.branch }} == 'refs/heads/master'
-      #   run: |
-      #     curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
-      #     jq -r ".version" > build/.version
-      #     VERSION=$(cat build/.version)
-      #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
+      - name: Fetch stable release version
+        if: ${{ matrix.branch }} == 'master'
+        run: |
+          curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
+          jq -r ".version" > build/.version
+          VERSION=$(cat build/.version)
+          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
-      # - name: Fetch beta release version
-      #   if: ${{ matrix.branch }} == 'refs/heads/beta'
-      #   run: |
-      #     MAJOR_VER=$( \
-      #       curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
-      #       grep "href" | \
-      #       sed -e "s#/<.*##g" -e "s#.*/\">##g" | \
-      #       grep -o "^v.*" | \
-      #       sort --version-sort | \
-      #       tail -n1 \
-      #     )
-      #     curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/${MAJOR_VER}/ | \
-      #     grep deb | \
-      #     sed  -e "s#deb.*#deb#g" -e "s#.*fah#fah#g" -e "s#.*latest.*##g" | \
-      #     grep -o "^fah.*\.deb$" | \
-      #     sort --version-sort | \
-      #     tail -n1 | \
-      #     sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
-      #     VERSION=$(cat build/.version)
-      #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
+      - name: Fetch beta release version
+        if: ${{ matrix.branch }} == 'beta'
+        run: |
+          MAJOR_VER=$( \
+            curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
+            grep "href" | \
+            sed -e "s#/<.*##g" -e "s#.*/\">##g" | \
+            grep -o "^v.*" | \
+            sort --version-sort | \
+            tail -n1 \
+          )
+          curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/${MAJOR_VER}/ | \
+          grep deb | \
+          sed  -e "s#deb.*#deb#g" -e "s#.*fah#fah#g" -e "s#.*latest.*##g" | \
+          grep -o "^fah.*\.deb$" | \
+          sort --version-sort | \
+          tail -n1 | \
+          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
+          VERSION=$(cat build/.version)
+          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
-      # - name: Check for modified files
-      #   id: git-check
-      #   run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
 
-      # - name: Commit release version update
-      #   if: steps.git-check.outputs.modified == 'true'
-      #   run: |
-      #     git config --global user.name 'Stefan Crain'
-      #     git config --global user.email 'stefancrain@users.noreply.github.com'
-      #     git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
-      #     git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
+      - name: Commit release version update
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config --global user.name 'Stefan Crain'
+          git config --global user.email 'stefancrain@users.noreply.github.com'
+          git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
+          git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
 
-      # - name: Push changes + tags
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     tags: true
-      #     branch: "${{ matrix.branch }}"
-      #     github_token: "${{ secrets.PAT }}"
+      - name: Push changes + tags
+        uses: ad-m/github-push-action@master
+        with:
+          tags: true
+          branch: "${{ matrix.branch }}"
+          github_token: "${{ secrets.PAT }}"
