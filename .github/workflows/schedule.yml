@@ -1,22 +1,29 @@
 ---
 name: Daily schedule
-
 on:
   schedule:
-    - cron: "* */6 * * *"
+    - cron: "* * * * *"
 
 jobs:
   fetch-versions:
     name: "Fetch Beta and Stable releases"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+          - master
+          - beta
     steps:
       - name: Checkout code
         uses: actions/checkout@master
         with:
-          token: ${{ secrets.PAT }}
+          ref: "${{ matrix.branch }}"
+          token: "${{ secrets.PAT }}"
+
+      - run: echo I've checked out the `${{ matrix.branch }}` branch
 
       - name: Fetch stable release version
-        if: github.ref == 'refs/heads/master'
+        if: ${{ matrix.branch }} == 'refs/heads/master'
         run: |
           curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
@@ -24,7 +31,7 @@ jobs:
           sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Fetch beta release version
-        if: github.ref == 'refs/heads/beta'
+        if: ${{ matrix.branch }} == 'refs/heads/beta'
         run: |
           MAJOR_VER=$( \
             curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
@@ -60,4 +67,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           tags: true
-          github_token: ${{ secrets.PAT }}
+          branch: "${{ matrix.branch }}"
+          github_token: "${{ secrets.PAT }}"
