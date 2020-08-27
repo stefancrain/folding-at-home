@@ -2,7 +2,7 @@
 name: Daily schedule
 on:
   schedule:
-    - cron: "* * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   fetch-versions:
