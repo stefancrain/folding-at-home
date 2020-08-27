@@ -23,16 +23,17 @@ jobs:
       - run: |
           echo "I've checked out the ${{ matrix.branch }} branch"
           git status
+          echo "${{ github.ref }}"
 
       - name: Fetch stable release version
-        if: ${{ matrix.branch }} == 'master'
+        if: matrix.branch == 'master'
         run: |
           curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
           cat build/.version
 
       - name: Fetch beta release version
-        if: ${{ matrix.branch }} == 'beta'
+        if: matrix.branch == 'beta'
         run: |
           MAJOR_VER=$( \
             curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
