@@ -20,7 +20,9 @@ jobs:
           ref: "${{ matrix.branch }}"
           token: "${{ secrets.PAT }}"
 
-      - run: echo I've checked out the ${{ matrix.branch }} branch
+      - run: |
+          echo "I've checked out the ${{ matrix.branch }} branch"
+          ls -l
 
       - name: Fetch stable release version
         if: ${{ matrix.branch }} == 'master'
