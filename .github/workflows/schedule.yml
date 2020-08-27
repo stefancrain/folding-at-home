@@ -29,8 +29,6 @@ jobs:
         run: |
           curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
           jq -r ".version" > build/.version
-          VERSION=$(cat build/.version)
-          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Fetch beta release version
         if: ${{ matrix.branch }} == 'beta'
@@ -50,6 +48,9 @@ jobs:
           sort --version-sort | \
           tail -n1 | \
           sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
+
+      - name: Update Dockerfile version
+        run: |
           VERSION=$(cat build/.version)
           sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
