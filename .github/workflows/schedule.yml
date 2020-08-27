@@ -23,7 +23,6 @@ jobs:
       - run: |
           echo "I've checked out the ${{ matrix.branch }} branch"
           git status
-          echo "${{ github.ref }}"
 
       - name: Fetch stable release version
         if: matrix.branch == 'master'
@@ -52,10 +51,10 @@ jobs:
           sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
           cat build/.version
 
-      - name: Update Dockerfile version
-        run: |
-          VERSION=$(cat build/.version)
-          sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
+      # - name: Update Dockerfile version
+      #   run: |
+      #     VERSION=$(cat build/.version)
+      #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Check for modified files
         id: git-check
