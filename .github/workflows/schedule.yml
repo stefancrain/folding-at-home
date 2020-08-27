@@ -1,43 +1,70 @@
 ---
-name: Get latest release version
-
+name: Daily schedule
 on:
   schedule:
-    - cron: "* */6 * * *"
+    - cron: "* * * * *"
 
 jobs:
-  get-version:
+  fetch-versions:
+    name: "Fetch Beta and Stable releases"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+          - master
+          - beta
     steps:
       - uses: actions/checkout@master
         with:
-          token: ${{ secrets.PAT }}
+          ref: "${{ matrix.branch }}"
+          token: "${{ secrets.PAT }}"
 
-      - name: Fetch folding-at-home release version
-        run: |
-          curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
-          jq -r ".version" > build/.version
-          cat build/.version
+      - run: echo I've checked out the `${{ matrix.branch }}` branch
 
-      - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      # - name: Fetch stable release version
+      #   if: ${{ matrix.branch }} == 'refs/heads/master'
+      #   run: |
+      #     curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | \
+      #     jq -r ".version" > build/.version
+      #     VERSION=$(cat build/.version)
+      #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
-      - name: Commit latest release version
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config --global user.name 'Stefan Crain'
-          git config --global user.email 'stefancrain@users.noreply.github.com'
-          git commit -sam "Adding new release version $(cat build/.version)" || exit 0
-          git tag -a $(cat build/.version) -m "Automatic bump to $(cat build/.version)"
+      # - name: Fetch beta release version
+      #   if: ${{ matrix.branch }} == 'refs/heads/beta'
+      #   run: |
+      #     MAJOR_VER=$( \
+      #       curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
+      #       grep "href" | \
+      #       sed -e "s#/<.*##g" -e "s#.*/\">##g" | \
+      #       grep -o "^v.*" | \
+      #       sort --version-sort | \
+      #       tail -n1 \
+      #     )
+      #     curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/${MAJOR_VER}/ | \
+      #     grep deb | \
+      #     sed  -e "s#deb.*#deb#g" -e "s#.*fah#fah#g" -e "s#.*latest.*##g" | \
+      #     grep -o "^fah.*\.deb$" | \
+      #     sort --version-sort | \
+      #     tail -n1 | \
+      #     sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
+      #     VERSION=$(cat build/.version)
+      #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PAT }}
+      # - name: Check for modified files
+      #   id: git-check
+      #   run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
 
-      - name: Push tags
-        uses: ad-m/github-push-action@master
-        with:
-          tags: true
-          github_token: ${{ secrets.PAT }}
+      # - name: Commit release version update
+      #   if: steps.git-check.outputs.modified == 'true'
+      #   run: |
+      #     git config --global user.name 'Stefan Crain'
+      #     git config --global user.email 'stefancrain@users.noreply.github.com'
+      #     git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
+      #     git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
+
+      # - name: Push changes + tags
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     tags: true
+      #     branch: "${{ matrix.branch }}"
+      #     github_token: "${{ secrets.PAT }}"
