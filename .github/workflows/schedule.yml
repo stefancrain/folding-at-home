@@ -22,6 +22,7 @@ jobs:
 
       - run: |
           echo "I've checked out the ${{ matrix.branch }} branch"
+          git status
 
       - name: Fetch stable release version
         if: ${{ matrix.branch }} == 'master'
@@ -49,27 +50,23 @@ jobs:
           tail -n1 | \
           sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
           cat build/.version
-
       # - name: Update Dockerfile version
       #   run: |
       #     VERSION=$(cat build/.version)
       #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
-
-      - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
-
-      - name: Commit release version update
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config --global user.name 'Stefan Crain'
-          git config --global user.email 'stefancrain@users.noreply.github.com'
-          git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
-          git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
-
-      - name: Push changes + tags
-        uses: ad-m/github-push-action@master
-        with:
-          tags: true
-          branch: "${{ matrix.branch }}"
-          github_token: "${{ secrets.PAT }}"
+      # - name: Check for modified files
+      #   id: git-check
+      #   run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      # - name: Commit release version update
+      #   if: steps.git-check.outputs.modified == 'true'
+      #   run: |
+      #     git config --global user.name 'Stefan Crain'
+      #     git config --global user.email 'stefancrain@users.noreply.github.com'
+      #     git commit --all --signoff --message="Adding new release version $(cat build/.version)" || exit 0
+      #     git tag --annotate $(cat build/.version) --message="Automatic bump to $(cat build/.version)"
+      # - name: Push changes + tags
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     tags: true
+      #     branch: "${{ matrix.branch }}"
+      #     github_token: "${{ secrets.PAT }}"
