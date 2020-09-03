@@ -69,7 +69,6 @@ services:
 
 I don't currently have a K8s cluster at home, so I'm including examples of users running this image in their config.
 
-- [onedr0p/k3s-gitops](https://github.com/onedr0p/k3s-gitops/blob/fdc4be556833d3fcc4849b54cc248eb1a9c89dcc/deployments/default/folding-at-home/folding-at-home.yaml) works great but /u/onedrop has no approved GPUs to test
 - [coreweave/fah-docker](https://github.com/coreweave/fah-docker/blob/master/kubernetes/folding-at-home-deployment.yaml) (a different container) but the config to support GPU enabled docker container, untested (by me)
 
 TODO: create k8s cluster and test!
