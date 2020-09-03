@@ -7,7 +7,7 @@ metadata:
   labels:
     app: folding-at-home
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
           image: stefancrain/folding-at-home:7.5.1-gpu
           imagePullPolicy: IfNotPresent
           command: ["/bin/tini", "--", "/usr/bin/FAHClient", "--web-allow=0/0:7396", "--allow=0/0:7396", "--smp=true"]
-          args: ["--user=Devin_Buhl", "--team=241985", "--gpu=true", "--power=full", "--gpu-usage=50"]
+          args: ["--user=<YOUR_NAME>", "--team=241985", "--gpu=true", "--power=full", "--gpu-usage=50"]
           resources:
             requests:
               cpu: 100m
@@ -30,16 +30,16 @@ spec:
             limits:
               cpu: 1000m
               memory: 2Gi
-              gpu.intel.com/i915: 1
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: homelab.gpu/type
-                operator: In
-                values: 
-                  - "intel"
+#               gpu.intel.com/i915: 1
+#       affinity:
+#         nodeAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#             nodeSelectorTerms:
+#             - matchExpressions:
+#               - key: homelab.gpu/type
+#                 operator: In
+#                 values: 
+#                   - "intel"
 ---
 apiVersion: v1
 kind: Service
