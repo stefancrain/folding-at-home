@@ -1,3 +1,4 @@
+# See also: https://github.com/coreweave/fah-docker/blob/master/kubernetes/folding-at-home-deployment.yaml
 ---
 kind: Deployment
 apiVersion: apps/v1
