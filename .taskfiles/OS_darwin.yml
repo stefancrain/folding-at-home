@@ -1,0 +1,8 @@
+---
+version: "3"
+
+tasks:
+  install:
+    desc: Install required tools for MacOS development
+    cmds:
+      - brew install pre-commit yamllint jq yq shellcheck sshpass coreutils findutils

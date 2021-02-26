@@ -1,0 +1,12 @@
+---
+version: "3"
+
+tasks:
+  install:
+    desc: Install required tools for Linux development
+    cmds:
+      - sudo apt-get install -y yamllint jq shellcheck sshpass
+      - sudo apt-get install nodejs npm
+      - sudo pip3 install pre-commit
+      - sudo pip3 install pip-upgrader
+      - sudo npm install -g npm-check-updates

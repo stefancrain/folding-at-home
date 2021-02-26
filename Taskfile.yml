@@ -1,0 +1,67 @@
+---
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  clean:
+    desc: Cleans temp files and folders
+    cmds:
+      - docker system prune -a
+      - docker images -f dangling=true
+
+  lint:
+    desc: lint files
+    cmds:
+      - yamllint .
+      - mdl .
+      - hadolint build/Dockerfile
+
+  pretty:
+    desc: fix errors
+    cmds:
+      - prettier --parser=markdown --write '*.md' '**/*.md' || true
+      - prettier --parser=yaml --write '*.y*ml' '**/*.y*ml' || true
+
+  update:
+    cmds:
+      - curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | jq -r ".version" > build/.version
+      - cat build/.version
+
+  build:amd:
+    desc: build
+    cmds:
+      - docker buildx build --load --platform linux/amd64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --load --platform linux/amd64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      - docker images stefancrain/folding-at-home-mini
+      - docker images stefancrain/folding-at-home
+
+  build:arm:
+    desc: buildx
+    cmds:
+      - docker buildx build --load --platform linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --load --platform linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+
+  build:all:
+    desc: buildx
+    cmds:
+      # test building all
+      - docker buildx build  --platform linux/amd64,linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build  --platform linux/amd64,linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      # build native arch to load outside of buildx
+      - docker buildx build --load --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --load --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      # review filesize
+      - docker images stefancrain/folding-at-home-mini
+      - docker images stefancrain/folding-at-home
+
+  run:
+    desc: run locally
+    cmds:
+      - docker run -exec -it --rm --gpus all --entrypoint="nvidia-smi" "stefancrain/folding-at-home:local"
+      - docker run -exec -it --rm --gpus all --entrypoint="/bin/FAHClient" "stefancrain/folding-at-home:local" --info
+
+includes:
+  deps: .taskfiles/OS_{{OS}}.yml
