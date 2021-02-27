@@ -28,7 +28,7 @@ RUN ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
     && curl -o /fah.deb "${FAHURL}" \
     && DEBIAN_FRONTEND=noninteractive dpkg --force-depends --install /fah.deb
 
-FROM ubuntu:focal-20210119 as mini 
+FROM ubuntu:focal-20210119 as mini
 ARG VERSION=7.6.21
 ARG BUILD_DATE
 ARG VCS_REF
@@ -67,6 +67,12 @@ ARG TARGETPLATFORM
 ARG BUILD_DATE
 ARG VCS_REF
 WORKDIR /app
+# nvidia-container-runtime
+# Add needed nvidia environment variables for https://github.com/NVIDIA/nvidia-docker
+ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,graphics,utility" \
+    NVIDIA_VISIBLE_DEVICES="all" \
+    NVIDIA_REQUIRE_CUDA="cuda>=11.2" \
+    NCCL_VERSION=2.8.4
 LABEL maintainer="stefan.crain@gmail.com" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Docker CPU/GPU folding-at-home" \
@@ -78,13 +84,6 @@ LABEL maintainer="stefan.crain@gmail.com" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-# nvidia-container-runtime
-# Add needed nvidia environment variables for https://github.com/NVIDIA/nvidia-docker
-ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,graphics,utility" \
-    NVIDIA_VISIBLE_DEVICES="all" \
-    NVIDIA_REQUIRE_CUDA="cuda>=11.2" \
-    NCCL_VERSION=2.8.4
-
 RUN ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
     && ARCH_URL=$(echo $ARCH | sed "s#arm64#sbsa#g" | sed "s#amd64#x86_64#g") \
     && apt-get update \
@@ -95,29 +94,24 @@ RUN ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
     && curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/${ARCH_URL}/7fa2af80.pub | apt-key add - \
     && echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/${ARCH_URL} /" > /etc/apt/sources.list.d/cuda.list \
     && echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/${ARCH_URL} /" > /etc/apt/sources.list.d/nvidia-ml.list \
-    && apt-get purge --autoremove -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-
-# For libraries in the cuda-compat-* package: https://docs.nvidia.com/cuda/eula/index.html#attachment-a
-RUN apt-get update \
+    # For libraries in the cuda-compat-* package: https://docs.nvidia.com/cuda/eula/index.html#attachment-a
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
       cuda-cudart-11-2=11.2.146-1 \
       ocl-icd-opencl-dev \
       libnccl2 \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
+    && apt-get purge --autoremove -y curl \
     && rm -rf /var/lib/apt/ /var/lib/dpkg/ /var/lib/cache/ /var/lib/log/ \
     && ln -s cuda-11.2 /usr/local/cuda \
-    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /usr/share/doc/fahclient/ \
     && touch /usr/share/doc/fahclient/sample-config.xml \
     && groupadd -r fah \
     && useradd -r -g fah fah \
-    && chown -R fah /app
-
-# Required for nvidia-docker v1 
-RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf \
+    && chown -R fah /app \
+    # Required for nvidia-docker v1
+    && echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf \
     && echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
 
 ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH} \

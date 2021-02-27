@@ -11,13 +11,17 @@ tasks:
     cmds:
       - docker system prune -a
       - docker images -f dangling=true
+      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - docker buildx create --name multiarch --driver docker-container --use
+      - docker buildx inspect --bootstrap
 
   lint:
     desc: lint files
     cmds:
-      - yamllint .
-      - mdl .
-      - hadolint build/Dockerfile
+      - yamllint -c .lint/.yamllint.yml .
+      - mdl --config .lint/.mdlrc --style .lint/.mdl.rb .
+      - hadolint --config .lint/.hadolint.yml build/Dockerfile
+      - pre-commit run --all-files
 
   pretty:
     desc: fix errors
@@ -25,34 +29,33 @@ tasks:
       - prettier --parser=markdown --write '*.md' '**/*.md' || true
       - prettier --parser=yaml --write '*.y*ml' '**/*.y*ml' || true
 
-  update:
+  update:public:
     cmds:
-      - curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | jq -r ".version" > build/.version
-      - cat build/.version
+      - curl -sL https://formulae.brew.sh/api/cask/folding-at-home.json | jq -r ".version" > build/.fah-public.version
+      - cat build/.fah-public.version
 
   build:amd:
     desc: build
     cmds:
-      - docker buildx build --load --platform linux/amd64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
-      - docker buildx build --load --platform linux/amd64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --load --platform linux/amd64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --load --platform linux/amd64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
       - docker images stefancrain/folding-at-home-mini
       - docker images stefancrain/folding-at-home
 
   build:arm:
     desc: buildx
     cmds:
-      - docker buildx build --load --platform linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
-      - docker buildx build --load --platform linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --load --platform linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --load --platform linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      - docker images stefancrain/folding-at-home-mini
+      - docker images stefancrain/folding-at-home
 
   build:all:
     desc: buildx
     cmds:
       # test building all
-      - docker buildx build  --platform linux/amd64,linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
-      - docker buildx build  --platform linux/amd64,linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
-      # build native arch to load outside of buildx
-      - docker buildx build --load --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
-      - docker buildx build --load --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --target mini --tag "stefancrain/folding-at-home-mini:local" -f ./build/Dockerfile ./build/
+      - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --tag "stefancrain/folding-at-home:local" -f ./build/Dockerfile ./build/
       # review filesize
       - docker images stefancrain/folding-at-home-mini
       - docker images stefancrain/folding-at-home

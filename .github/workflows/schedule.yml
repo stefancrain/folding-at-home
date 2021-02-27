@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         branch:
-          - master
+          - main
           - beta
     steps:
       - name: Checkout code
@@ -38,8 +38,8 @@ jobs:
           grep -o "^fah.*\.deb$" | \
           sort --version-sort | \
           tail -n1 | \
-          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
-          cat build/.public.version
+          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/fah-public.version
+          cat build/.fah-public.version
           # beta version
           MAJOR_VER=$( \
             curl https://download.foldingathome.org/releases/beta/release/fahclient/debian-stable-64bit/ | \
@@ -55,12 +55,12 @@ jobs:
           grep -o "^fah.*\.deb$" | \
           sort --version-sort | \
           tail -n1 | \
-          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/.version
-          cat build/.beta.version
+          sed -e "s#fahclient_##g" -e "s#_amd64.deb##g" > build/fah-beta.version
+          cat build/.fah-beta.version
 
       # - name: Update Dockerfile version
       #   run: |
-      #     VERSION=$(cat build/.version)
+      #     VERSION=$(cat build/fah-public.version)
       #     sed -i '' "s/ VERSION=.*/ VERSION=${VERSION}/g" build/Dockerfile
 
       - name: Commit release version update
@@ -73,4 +73,4 @@ jobs:
             git push --atomic origin "${{ matrix.branch }}" ${{ env.VERSION }}
           fi
         env:
-          VERSION: $(cat build/.version)
+          VERSION: $(cat build/fah-public.version)
