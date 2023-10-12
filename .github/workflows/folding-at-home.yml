@@ -22,7 +22,7 @@ jobs:
       BUILD_DATE: $(date -u +'%Y-%m-%dT%H:%M:%SZ')
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         id: buildx
